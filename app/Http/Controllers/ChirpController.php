@@ -68,10 +68,17 @@ class ChirpController extends Controller
     public function update(Request $request, Chirp $chirp): RedirectResponse
     {
         $this->authorize('update', $chirp);
- 
-        return view('chirps.edit', [
-            'chirp' => $chirp,
+
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
         ]);
+
+        $chirp->update($validated);
+ 
+        /*return view('chirps.edit', [
+            'chirp' => $chirp,
+        ]);*/
+        return redirect(route('chirps.index'));
     }
 
     /**
